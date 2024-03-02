@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-
+import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity() {
@@ -15,43 +15,77 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val word = findViewById<TextView>(R.id.word)
-        word.text = wordToGuess
-        val counter = 0
+
+        var counter = 0
+        val word = findViewById<TextView>(R.id.wordToGuess)
+
 
         val guessBox1 = findViewById<TextView>(R.id.guess1)
         val guessBox2 = findViewById<TextView>(R.id.guess2)
         val guessBox3 = findViewById<TextView>(R.id.guess3)
 
+        val checkbox1 = findViewById<TextView>(R.id.showCheck1)
+        val checkbox2 = findViewById<TextView>(R.id.showCheck2)
+        val checkbox3 = findViewById<TextView>(R.id.showCheck3)
 
         val button = findViewById<Button>(R.id.button)
+
         button.setOnClickListener {
-            val guess = findViewById<EditText>(R.id.guessBox).text.toString()
-            val result = checkGuess(guess)
-            guessBox1.text = result[0].toString()
-            guessBox2.text = result[1].toString()
-            guessBox3.text = result[2].toString()
+
+            var guess = findViewById<EditText>(R.id.guessBox).text.toString()
+            guess = guess.uppercase()
+
+            if(counter < 3) {
+                val result = checkGuess(guess)
+                if(counter == 0){
+                    guessBox1.text = guess
+                    checkbox1.text = checkGuess(guess)
+                }
+                if(counter == 1){
+                    guessBox2.text = guess
+                    checkbox2.text = checkGuess(guess)
+                }
+                if(counter == 2){
+                    guessBox3.text = guess
+                    checkbox3.text = checkGuess(guess)
+                }
+
+
+                counter += 1
+                if (counter>2){
+                    word.text=wordToGuess
+                    button.isEnabled = false
+                }
+                if(guessBox3.text != wordToGuess || counter>2) {
+                    Toast.makeText(it.context, "Number of guesses exceeded", Toast.LENGTH_SHORT)
+                        .show()
+                }else if(guess == wordToGuess) {
+                    Toast.makeText(it.context, "YOU DID IT", Toast.LENGTH_SHORT)
+                }
+
+            }
+
+
+
         }
-
-
-
     }
 
-    private fun checkGuess(guess: String) : String {
+    private fun checkGuess(guess: String): String {
         var result = ""
-        for (i in 0..3) {
+        for (i in 0 until 4) {
             if (guess[i] == wordToGuess[i]) {
                 result += "O"
-            }
-            else if (guess[i] in wordToGuess) {
+            } else if (guess[i] in wordToGuess) {
                 result += "+"
-            }
-            else {
+            } else {
                 result += "X"
             }
         }
         return result
     }
+
+
+
 
 
     object FourLetterWordList {
