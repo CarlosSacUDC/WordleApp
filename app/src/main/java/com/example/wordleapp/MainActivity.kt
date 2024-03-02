@@ -56,9 +56,8 @@ class MainActivity : AppCompatActivity() {
                     word.text=wordToGuess
                     button.isEnabled = false
                 }
-                if(guessBox3.text != wordToGuess || counter>2) {
-                    Toast.makeText(it.context, "Number of guesses exceeded", Toast.LENGTH_SHORT)
-                        .show()
+                if(guessBox3.text != wordToGuess && counter>2) {
+                    Toast.makeText(it.context, "Number of guesses exceeded", Toast.LENGTH_SHORT).show()
                 }else if(guess == wordToGuess) {
                     Toast.makeText(it.context, "YOU DID IT", Toast.LENGTH_SHORT)
                 }
